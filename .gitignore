@@ -26,3 +26,4 @@ kuzu_nif-*.tar
 /tmp/
 
 kuzu.db
+.DS_Store

@@ -1,0 +1,42 @@
+[Node(
+  NodeVal { 
+    id: InternalID { 
+      offset: 0, 
+      table_id: 0 
+    }, 
+    label: "User", 
+    properties: [
+      ("name", String("Adam")),
+      ("age", Int64(30)),
+      ("population", Null(Int64))
+    ]
+  }
+),
+Rel(
+  RelVal {
+    src_node: InternalID {
+      offset: 0,
+      table_id: 0
+    },
+    dst_node: InternalID {
+      offset: 1,
+      table_id: 0
+    },
+    label: "Follows",
+    properties: [("since", Int64(2020))]
+  }
+),
+Node(
+  NodeVal {
+    id: InternalID {
+      offset: 1,
+      table_id: 0
+    },
+    label: "User",
+    properties: [
+      ("name", String("Karissa")),
+      ("age", Int64(40)),
+      ("population", Null(Int64))
+    ]
+  }
+)]

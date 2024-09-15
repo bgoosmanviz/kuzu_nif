@@ -1,0 +1,1 @@
+KuzuNif.seed()

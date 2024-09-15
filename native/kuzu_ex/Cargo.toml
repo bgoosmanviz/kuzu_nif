@@ -10,5 +10,11 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-kuzu = "0.6.0"
+arrow-array = { version = "43.0.0" }
+kuzu = { version = "0.6.0", features = ["arrow"] }
 rustler = "0.34.0"
+polars-arrow = { version = "0.43.1", features = ["arrow_rs"] }
+arrow-schema = { version = "43.0.0" }
+
+[dependencies.polars]
+version = "0.43.1"
