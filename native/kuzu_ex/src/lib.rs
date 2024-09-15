@@ -20,20 +20,6 @@ pub enum KuzuNifValue {
 }
 
 #[derive(NifStruct)]
-#[module = "KuzuNif.NodeVal"]
-pub struct KuzuNifNodeVal {
-    label: String,
-    properties: Vec<(String, KuzuNifValue)>,
-}
-
-#[derive(NifStruct)]
-#[module = "KuzuNif.RelVal"]
-pub struct KuzuNifRelVal {
-    label: String,
-    properties: Vec<(String, KuzuNifValue)>,
-}
-
-#[derive(NifStruct)]
 #[module = "KuzuNif.QueryResult"]
 pub struct KuzuNifQueryResult {
     result: Vec<Vec<KuzuNifValue>>,

@@ -1,6 +1,14 @@
 # KuzuNif
 
-**TODO: Add description**
+```
+# Seed the database.
+python main.py
+
+# Run the test. This takes a while to build.
+mix test
+```
+
+There are some unused Rust deps from an attempt at adapting the Kuzu QueryResult into a Polars dataframe. They could be removed if needed.
 
 ## Installation
 
