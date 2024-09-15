@@ -5,7 +5,7 @@ defmodule KuzuNifTest do
   test "greets the world" do
     result = KuzuNif.run_query(
       "./kuzu.db",
-      "MATCH (n)-[r]-(m) RETURN n, r, m;"
+      "MATCH (n) RETURN n.name, n.age, n.population;"
     )
     IO.inspect(result)
   end

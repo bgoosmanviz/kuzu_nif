@@ -1,86 +1,78 @@
-use rustler::{NifResult, Error};
-use kuzu::{Connection, Database, SystemConfig};
-use arrow_array::RecordBatch;
-use arrow_array::{Array, StructArray};
-use arrow_schema::DataType;
-use polars::prelude::*;
-use std::sync::Arc;
+use rustler::{NifStruct, NifResult, NifTaggedEnum, Error};
+use kuzu::{Connection, Database, SystemConfig, Value};
 
+#[derive(NifTaggedEnum)]
+pub enum KuzuNifValue {
+    Null(),
+    Bool(bool),
+    Int64(i64),
+    Int32(i32),
+    Int16(i16),
+    Int8(i8),
+    UInt64(u64),
+    UInt32(u32),
+    UInt16(u16),
+    UInt8(u8),
+    Int128(i128),
+    Double(f64),
+    Float(f32),
+    String(String),
+}
+
+#[derive(NifStruct)]
+#[module = "KuzuNif.NodeVal"]
+pub struct KuzuNifNodeVal {
+    label: String,
+    properties: Vec<(String, KuzuNifValue)>,
+}
+
+#[derive(NifStruct)]
+#[module = "KuzuNif.RelVal"]
+pub struct KuzuNifRelVal {
+    label: String,
+    properties: Vec<(String, KuzuNifValue)>,
+}
+
+#[derive(NifStruct)]
+#[module = "KuzuNif.QueryResult"]
+pub struct KuzuNifQueryResult {
+    result: Vec<Vec<KuzuNifValue>>,
+}
 
 #[rustler::nif]
-fn run_query(path: String, query: String) -> NifResult<String> {
+fn run_query(path: String, query: String) -> NifResult<KuzuNifQueryResult> {
     let config = SystemConfig::default();
-    let db = match Database::new(&path, config) {
-        Ok(db) => db,
-        Err(e) => return Err(Error::Term(Box::new(format!("Failed to open database: {}", e))))
-    };
+    let db = Database::new(&path, config).map_err(|e| Error::Term(Box::new(format!("Failed to open database: {}", e))))?;
+    let conn = Connection::new(&db).map_err(|e| Error::Term(Box::new(format!("Failed to create connection: {}", e))))?;
+    let query_result = conn.query(&query).map_err(|e| Error::Term(Box::new(format!("Query failed: {}", e))))?;
 
-    let conn = match Connection::new(&db) {
-        Ok(conn) => conn,
-        Err(e) => return Err(Error::Term(Box::new(format!("Failed to create connection: {}", e))))
-    };
-
-    let mut query_result = match conn.query(&query) {
-        Ok(query_result) => query_result,
-        Err(e) => return Err(Error::Term(Box::new(format!("Query failed: {}", e))))
-    };
-
-    // for row in query_result {
-    //     println!("{:?}", row);
-    // }
-
-
-    fn record_batch_to_dataframe(batch: &RecordBatch) -> Result<DataFrame, PolarsError> {
-        let schema = batch.schema();
-        let mut columns = Vec::new();
-    
-        for (i, column) in batch.columns().iter().enumerate() {
-            let field = schema.field(i);
-            match field.data_type() {
-                DataType::Struct(fields) => {
-                    let struct_array = column.as_any().downcast_ref::<StructArray>().unwrap();
-                    for (j, field) in fields.iter().enumerate() {
-                        let name = format!("{}_{}", field.name(), field.name());
-                        let array = struct_array.column(j);
-                        let series = Series::try_from((name.as_str(), array.as_ref()))?;
-                        columns.push(series);
-                    }
-                },
-                _ => {
-                    let name = field.name();
-                    let series = Series::try_from((name, column.as_ref()))?;
-                    columns.push(series);
-                }
-            }
+    let mut result = Vec::new();
+    for row in query_result {
+        let mut row_result = Vec::new();
+        for value in row {
+            let nif_value = match value {
+                Value::Bool(b) => KuzuNifValue::Bool(b),
+                Value::Int64(i) => KuzuNifValue::Int64(i),
+                Value::Int32(i) => KuzuNifValue::Int32(i),
+                Value::Int16(i) => KuzuNifValue::Int16(i),
+                Value::Int8(i) => KuzuNifValue::Int8(i),
+                Value::UInt64(u) => KuzuNifValue::UInt64(u),
+                Value::UInt32(u) => KuzuNifValue::UInt32(u),
+                Value::UInt16(u) => KuzuNifValue::UInt16(u),
+                Value::UInt8(u) => KuzuNifValue::UInt8(u),
+                Value::Int128(i) => KuzuNifValue::Int128(i),
+                Value::Double(f) => KuzuNifValue::Double(f),
+                Value::Float(f) => KuzuNifValue::Float(f),
+                Value::String(s) => KuzuNifValue::String(s),
+                Value::Null(_) => KuzuNifValue::Null(),
+                _ => return Err(Error::Term(Box::new("Unsupported value type"))),
+            };
+            row_result.push(nif_value);
         }
-    
-        DataFrame::new(columns)
+        result.push(row_result);
     }
 
-    let chunk_size = 1000; // Or whatever size you want
-    match query_result.iter_arrow(chunk_size) {
-        Ok(arrow_iterator) => {
-            // Use the arrow_iterator here
-            for chunk in arrow_iterator {
-                // The chunk is already a RecordBatch, no need for additional matching
-                // println!("Received a batch with {} rows", chunk.num_rows());
-                // println!("Schema: {:?}", chunk.schema());
-                match record_batch_to_dataframe(&chunk) {
-                    Ok(df) => {
-                        println!("Converted to DataFrame: {:?}", df);
-                    },
-                    Err(e) => {
-                        println!("Error converting to DataFrame: {:?}", e);
-                    }
-                }
-            }
-        },
-        Err(e) => {
-            println!("Error creating ArrowIterator: {:?}", e);
-        }
-    }
-
-    Ok("hi".to_string())
+    Ok(KuzuNifQueryResult { result })
 }
 
 rustler::init!("Elixir.KuzuNif");
