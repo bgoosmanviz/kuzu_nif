@@ -9,10 +9,6 @@ My solution involves copying the query result, which sounds kind of silly becaus
 ## Try it out
 
 ```
-# Seed the database.
-> pip install kuzu
-> python main.py
-
 # Run the test. This takes a while to build.
 # See test/kuzu_nif_test.exs
 > mix test
