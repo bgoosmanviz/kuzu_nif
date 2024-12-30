@@ -55,7 +55,7 @@ jobs:
       id: build-crate
       uses: philss/rustler-precompiled-action@v1.0.1
       env:
-        CXXFLAGS: "-std=c++20"
+        CXXFLAGS: "-std=c++2a"
         CFLAGS: "-std=c11"
         RUSTFLAGS: "-C target-feature=-crt-static"
         CC: gcc-10
