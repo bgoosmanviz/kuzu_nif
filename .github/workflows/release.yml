@@ -46,24 +46,24 @@ jobs:
     - name: Install build dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y musl-tools cmake g++-10
+        sudo apt-get install -y musl-tools cmake g++-11
 
     - name: Configure build environment
       run: |
-        echo "CC=gcc-10" >> $GITHUB_ENV
-        echo "CXX=g++-10" >> $GITHUB_ENV
-        echo "CXXFLAGS=-std=c++2a -fconcepts" >> $GITHUB_ENV
+        echo "CC=gcc-11" >> $GITHUB_ENV
+        echo "CXX=g++-11" >> $GITHUB_ENV
+        echo "CXXFLAGS=-std=c++20 -fconcepts" >> $GITHUB_ENV
         echo "CFLAGS=-std=c11" >> $GITHUB_ENV
 
     - name: Build the project
       id: build-crate
       uses: philss/rustler-precompiled-action@v1.0.1
       env:
-        CXXFLAGS: "-std=c++2a -fconcepts"
+        CXXFLAGS: "-std=c++20 -fconcepts"
         CFLAGS: "-std=c11"
         RUSTFLAGS: "-C target-feature=-crt-static"
-        CC: gcc-10
-        CXX: g++-10
+        CC: gcc-11
+        CXX: g++-11
       with:
         project-name: kuzu_nif
         project-version: ${{ env.PROJECT_VERSION }}
