@@ -1,13 +1,17 @@
 defmodule KuzuNif.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @source_url "https://github.com/bgoosmanviz/kuzu_nif"
+
   def project do
     [
       app: :kuzu_nif,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package()
     ]
   end
 
@@ -21,9 +25,21 @@ defmodule KuzuNif.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:rustler_precompiled, "~> 0.8.2"},
       {:rustler, "~> 0.34.0"}
+    ]
+  end
+
+  defp package do
+    [
+      files: [
+        "lib",
+        "native",
+        "checksum-*.exs",
+        "mix.exs"
+      ],
+      licenses: ["MIT"],
+      links: %{"GitHub" => @source_url}
     ]
   end
 end
