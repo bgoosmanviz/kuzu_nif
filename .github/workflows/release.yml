@@ -16,16 +16,16 @@ jobs:
       matrix:
         nif: ["2.17"]
         job:
-          - { target: arm-unknown-linux-gnueabihf , os: ubuntu-20.04 , use-cross: true }
-          - { target: aarch64-unknown-linux-gnu   , os: ubuntu-20.04 , use-cross: true }
-          - { target: aarch64-unknown-linux-musl  , os: ubuntu-20.04 , use-cross: true }
-          - { target: aarch64-apple-darwin        , os: macos-15      }
-          - { target: riscv64gc-unknown-linux-gnu , os: ubuntu-20.04 , use-cross: true }
-          - { target: x86_64-apple-darwin         , os: macos-15      }
-          - { target: x86_64-unknown-linux-gnu    , os: ubuntu-20.04  }
+          # - { target: arm-unknown-linux-gnueabihf , os: ubuntu-20.04 , use-cross: true }
+          # - { target: aarch64-unknown-linux-gnu   , os: ubuntu-20.04 , use-cross: true }
+          # - { target: aarch64-unknown-linux-musl  , os: ubuntu-20.04 , use-cross: true }
+          # - { target: aarch64-apple-darwin        , os: macos-15      }
+          # - { target: riscv64gc-unknown-linux-gnu , os: ubuntu-20.04 , use-cross: true }
+          # - { target: x86_64-apple-darwin         , os: macos-15      }
+          # - { target: x86_64-unknown-linux-gnu    , os: ubuntu-20.04  }
           - { target: x86_64-unknown-linux-musl   , os: ubuntu-20.04 , use-cross: true }
-          - { target: x86_64-pc-windows-gnu       , os: windows-2019  }
-          - { target: x86_64-pc-windows-msvc      , os: windows-2019  }
+          # - { target: x86_64-pc-windows-gnu       , os: windows-2019  }
+          # - { target: x86_64-pc-windows-msvc      , os: windows-2019  }
 
     steps:
     - name: Checkout source code
@@ -43,9 +43,23 @@ jobs:
         toolchain: stable
         target: ${{ matrix.job.target }}
 
+    # Add step to install modern C++ compiler
+    - name: Install modern C++ compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++-10
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+        sudo update-alternatives --set g++ /usr/bin/g++-10    
+
     - name: Build the project
       id: build-crate
       uses: philss/rustler-precompiled-action@v1.0.1
+      env:
+        CXXFLAGS: "-std=c++20"
+        CFLAGS: "-std=c11"
+        RUSTFLAGS: "-C target-feature=-crt-static"
+        CC: gcc-10
+        CXX: g++-10
       with:
         project-name: kuzu_nif
         project-version: ${{ env.PROJECT_VERSION }}
