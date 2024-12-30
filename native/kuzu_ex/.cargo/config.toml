@@ -23,6 +23,10 @@ rustflags = [
 ]
 linker = "x86_64-linux-musl-gcc"
 
+[env]
+CXXFLAGS = "-std=c++2a -fconcepts"
+CFLAGS = "-std=c11"
+
 [target.aarch64-unknown-linux-musl]
 rustflags = [
     "-C", "target-feature=-crt-static",
@@ -31,7 +35,3 @@ rustflags = [
 
 [profile.release]
 lto = true
-
-[env]
-CXXFLAGS = "-std=c++2a"
-CFLAGS = "-std=c11"

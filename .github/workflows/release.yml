@@ -43,19 +43,23 @@ jobs:
         toolchain: stable
         target: ${{ matrix.job.target }}
 
-    # Add step to install modern C++ compiler
-    - name: Install modern C++ compiler
+    - name: Install build dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y g++-10
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
-        sudo update-alternatives --set g++ /usr/bin/g++-10    
+        sudo apt-get install -y musl-tools cmake g++-10
+
+    - name: Configure build environment
+      run: |
+        echo "CC=gcc-10" >> $GITHUB_ENV
+        echo "CXX=g++-10" >> $GITHUB_ENV
+        echo "CXXFLAGS=-std=c++2a -fconcepts" >> $GITHUB_ENV
+        echo "CFLAGS=-std=c11" >> $GITHUB_ENV
 
     - name: Build the project
       id: build-crate
       uses: philss/rustler-precompiled-action@v1.0.1
       env:
-        CXXFLAGS: "-std=c++2a"
+        CXXFLAGS: "-std=c++2a -fconcepts"
         CFLAGS: "-std=c11"
         RUSTFLAGS: "-C target-feature=-crt-static"
         CC: gcc-10
