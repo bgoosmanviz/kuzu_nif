@@ -23,9 +23,9 @@ rustflags = [
 ]
 linker = "x86_64-linux-musl-gcc"
 
-[env]
-CXXFLAGS = "-std=c++20 -fconcepts"
-CFLAGS = "-std=c11"
+# [env]
+# CXXFLAGS = "-std=c++20 -fconcepts"
+# CFLAGS = "-std=c11"
 
 [target.aarch64-unknown-linux-musl]
 rustflags = [
