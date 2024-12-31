@@ -44,9 +44,9 @@ jobs:
 
     - name: Build the project
       id: build-crate
-      uses: philss/rustler-precompiled-action@v1.0.1
+      uses: philss/rustler-precompiled-action@v1.1.4
       with:
-        project-name: kuzu_nif
+        project-name: kuzu_ex
         project-version: ${{ env.PROJECT_VERSION }}
         target: ${{ matrix.job.target }}
         nif-version: ${{ matrix.nif }}
