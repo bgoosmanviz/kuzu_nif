@@ -40,8 +40,7 @@ jobs:
           g++ \
           cmake \
           pkg-config \
-          libssl-dev \
-        && rm -rf /var/lib/apt/lists/*
+          libssl-dev
 
     - name: Build the project
       id: build-crate
