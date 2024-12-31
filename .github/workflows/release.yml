@@ -16,7 +16,7 @@ jobs:
       matrix:
         nif: ["2.17"]
         job:
-          - { target: x86_64-unknown-linux-musl, os: ubuntu-22.04, use-cross: true }
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04 }
 
     steps:
     - uses: actions/checkout@v3
@@ -41,7 +41,7 @@ jobs:
           cmake \
           pkg-config \
           libssl-dev \
-          musl-tools
+        && rm -rf /var/lib/apt/lists/*
 
     - name: Build the project
       id: build-crate
@@ -54,7 +54,7 @@ jobs:
         use-cross: ${{ matrix.job.use-cross }}
         project-dir: "native/kuzu_ex"
 
-    - name: Artifact upload
+    - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.build-crate.outputs.file-name }}
