@@ -16,27 +16,15 @@ rustflags = [
     "-C", "link-arg=dynamic_lookup",
 ]
 
-[target.x86_64-unknown-linux-musl]
-rustflags = [
-    "-C", "target-feature=-crt-static",
-    "-C", "link-arg=-lstdc++",
-]
-linker = "x86_64-linux-musl-gcc"
-env = { CXXFLAGS = "-std=c++20 -fconcepts" }
-
-[target.aarch64-unknown-linux-musl]
-rustflags = [
-    "-C", "target-feature=-crt-static",
-    "-C", "link-arg=-lstdc++",
-]
-env = { CXXFLAGS = "-std=c++20 -fconcepts" }
-
 [target.aarch64-unknown-linux-gnu]
 rustflags = [
     "-C", "target-feature=-crt-static",
     "-C", "link-arg=-lstdc++",
 ]
-env = { CXXFLAGS = "-std=c++20 -fconcepts" }
+env = { 
+    CXXFLAGS = "-std=c++20 -fconcepts -fPIC",
+    CFLAGS = "-std=c11 -fPIC"
+}
 
 # x86_64-unknown-linux-gnu intentionally not defined
 
