@@ -55,7 +55,7 @@ by adding `kuzu_nif` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:kuzu_nif, "~> 0.3.0"}
+    {:kuzu_nif, "~> 0.5.0"}
   ]
 end
 ```
