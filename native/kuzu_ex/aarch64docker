@@ -1,0 +1,8 @@
+FROM ghcr.io/cross-rs/aarch64-unknown-linux-gnu:edge    
+    
+RUN dpkg --add-architecture arm64 && \
+    apt-get update && \
+    apt-get install --assume-yes --no-install-recommends \
+        g++-12:arm64 \
+        gcc-12:arm64 \
+        libstdc++-12-dev:arm64

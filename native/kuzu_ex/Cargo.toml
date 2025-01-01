@@ -23,3 +23,6 @@ version = "0.43.1"
 [features]
 default = ["nif_version_2_17"]
 nif_version_2_17 = ["rustler/nif_version_2_17"]
+
+[package.metadata.cross.target.aarch64-unknown-linux-gnu]
+dockerfile = "aarch64docker"
