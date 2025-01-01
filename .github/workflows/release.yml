@@ -35,17 +35,17 @@ jobs:
         toolchain: stable
         target: ${{ matrix.job.target }}
 
-    - name: Install prerequisites
-      shell: bash
-      run: |
-        case ${{ matrix.job.target }} in
-          aarch64-unknown-linux-*)
-            sudo apt-get update
-            sudo apt-get install -y gcc-12-aarch64-linux-gnu g++-12-aarch64-linux-gnu
-            sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-12 100
-            sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-12 100
-            ;;
-        esac
+    # - name: Install prerequisites
+    #   shell: bash
+    #   run: |
+    #     case ${{ matrix.job.target }} in
+    #       aarch64-unknown-linux-*)
+    #         sudo apt-get update
+    #         sudo apt-get install -y gcc-12-aarch64-linux-gnu g++-12-aarch64-linux-gnu
+    #         sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-12 100
+    #         sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-12 100
+    #         ;;
+    #     esac
 
     # - name: Install build dependencies
     #   run: |
@@ -67,6 +67,7 @@ jobs:
         nif-version: ${{ matrix.nif }}
         use-cross: ${{ matrix.job.use-cross }}
         project-dir: "native/kuzu_ex"
+        cross-version: "v0.2.5"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
