@@ -21,6 +21,11 @@ rustflags = [
     "-C", "target-feature=-crt-static",
     "-C", "link-arg=-lstdc++",
 ]
+pre-build = [
+    "dpkg --add-architecture arm64",
+    "apt-get update",
+    "apt-get install -y curl build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu libstdc++-12-dev:arm64 cmake pkg-config"
+]
 linker = "aarch64-linux-gnu-gcc"
 
 [target.aarch64-unknown-linux-gnu.env]
