@@ -1,5 +1,8 @@
 FROM ubuntu:22.04
 
+ARG VERSION
+ENV ARCH=aarch64-unknown-linux-gnu
+
 # Add arm64 architecture and install build dependencies
 RUN dpkg --add-architecture arm64 && \
     apt-get update && \
@@ -31,6 +34,13 @@ WORKDIR /app
 COPY . .
 
 # Build the library
-RUN cargo build --release --target aarch64-unknown-linux-gnu
+RUN cd native/kuzu_ex && \
+    cargo build --release --target aarch64-unknown-linux-gnu && \
+    cd target/aarch64-unknown-linux-gnu/release && \
+    mv libkuzu_ex.so libkuzu_ex-v${VERSION}-nif-2.17-${ARCH}.so && \
+    tar -czf libkuzu_ex-v${VERSION}-nif-2.17-${ARCH}.so.tar.gz libkuzu_ex-v${VERSION}-nif-2.17-${ARCH}.so
+
+# The output file will be at:
+# /app/native/kuzu_ex/target/aarch64-unknown-linux-gnu/release/libkuzu_ex-v${VERSION}-nif-2.17-aarch64-unknown-linux-gnu.so.tar.gz
 
 
