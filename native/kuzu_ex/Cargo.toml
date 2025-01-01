@@ -24,16 +24,16 @@ version = "0.43.1"
 default = ["nif_version_2_17"]
 nif_version_2_17 = ["rustler/nif_version_2_17"]
 
-# [package.metadata.cross.target.aarch64-unknown-linux-gnu]
-# dockerfile = "aarch64docker"
+[package.metadata.cross.target.aarch64-unknown-linux-gnu]
+dockerfile = "arm64.Dockerfile"
 
-[workspace.metadata.cross.target.aarch64-unknown-linux-gnu]
-pre-build = [
-    "dpkg --add-architecture arm64",
-    "apt-get update",
-    "apt-get install -y curl build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu libstdc++-12-dev:arm64 cmake pkg-config"
-]
+# [workspace.metadata.cross.target.aarch64-unknown-linux-gnu]
+# pre-build = [
+#     "dpkg --add-architecture arm64",
+#     "apt-get update",
+#     "apt-get install -y curl build-essential g++-aarch64-linux-gnu gcc-aarch64-linux-gnu libstdc++-12-dev:arm64 cmake pkg-config"
+# ]
 
-[workspace.metadata.cross.target.aarch64-unknown-linux-gnu.env]
-CXXFLAGS = "-std=c++20 -fconcepts -fPIC"
-CFLAGS = "-std=c11 -fPIC"
+# [workspace.metadata.cross.target.aarch64-unknown-linux-gnu.env]
+# CXXFLAGS = "-std=c++20 -fconcepts -fPIC"
+# CFLAGS = "-std=c11 -fPIC"
