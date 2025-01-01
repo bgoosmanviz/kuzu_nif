@@ -4,7 +4,20 @@ ARG VERSION
 ENV ARCH=aarch64-unknown-linux-gnu
 
 # Add arm64 architecture and install build dependencies
+# RUN dpkg --add-architecture arm64 && \
+#     apt-get update && \
+#     apt-get install -y \
+#     curl \
+#     build-essential \
+#     g++-aarch64-linux-gnu \
+#     gcc-aarch64-linux-gnu \
+#     libstdc++-12-dev:arm64 \
+#     cmake \
+#     pkg-config \
+#     && rm -rf /var/lib/apt/lists/*
 RUN dpkg --add-architecture arm64 && \
+    sed -i 's/http:\/\/archive.ubuntu.com\/ubuntu\//http:\/\/ports.ubuntu.com\/ubuntu-ports\//g' /etc/apt/sources.list && \
+    sed -i 's/http:\/\/security.ubuntu.com\/ubuntu\//http:\/\/ports.ubuntu.com\/ubuntu-ports\//g' /etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y \
     curl \
