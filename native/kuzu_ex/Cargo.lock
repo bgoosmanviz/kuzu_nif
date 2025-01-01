@@ -811,9 +811,9 @@ dependencies = [
 
 [[package]]
 name = "kuzu"
-version = "0.7.0"
+version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ddd511ef36cf1462812bba37e67408dd01fb0327b343da7e1f0d3f9ac2834657"
+checksum = "b0c6aded71f5ece5e3316dfef3f934b96a78467ad174946f4a6b4feb058ee2d4"
 dependencies = [
  "arrow",
  "cmake",
@@ -827,7 +827,7 @@ dependencies = [
 
 [[package]]
 name = "kuzu_ex"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "arrow-array 43.0.0",
  "arrow-schema 43.0.0",
