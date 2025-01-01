@@ -64,3 +64,28 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/kuzu_nif>.
 
+## Release
+
+This project uses the [rustler_precompiled](https://github.com/philss/rustler_precompiled) package to build the NIFs and avoid the need to compile the Rust crate locally.
+
+To release a new version:
+
+```
+1. release a new tag
+2. push the code to your repository with the new tag: `git push origin main --tags`
+3. wait for all NIFs to be built
+4. run `mix rustler_precompiled.download KuzuNif --all --print --ignore-unavailable`
+5. release the package to Hex.pm (make sure your release includes the correct files).
+
+Source: [Precompilation guide](https://hexdocs.pm/rustler_precompiled/precompilation_guide.html)
+```
+
+### Known Issues
+
+- Couldn't figure out how to build aarch64-unknown-linux-gnu NIFs.
+  - [Thread on rust forums](https://users.rust-lang.org/t/need-help-cross-compiling-to-aarch64-unknown-linux-gnu/123318)
+  - [Thread in ruster_precompiled repo](https://github.com/philss/rustler_precompiled/issues/87)
+
+### About NIF Versions
+
+https://github.com/rusterlium/rustler?tab=readme-ov-file#supported-nif-version

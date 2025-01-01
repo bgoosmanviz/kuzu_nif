@@ -26,7 +26,7 @@ defmodule KuzuNif.MixProject do
   defp deps do
     [
       {:rustler_precompiled, "~> 0.8.2"},
-      {:rustler, "~> 0.34.0"}
+      {:rustler, "~> 0.34.0", optional: true}
     ]
   end
 

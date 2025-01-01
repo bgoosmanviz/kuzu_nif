@@ -7,7 +7,8 @@ defmodule KuzuNif do
     base_url:
       "https://github.com/bgoosmanviz/kuzu_nif/releases/download/v#{version}",
     force_build: System.get_env("RUSTLER_PRECOMPILED_FORCE_BUILD") in ["1", "true"],
-    version: version
+    version: version,
+    nif_versions: ["2.17"]
 
   def run_query(_path, _query), do: :erlang.nif_error(:nif_not_loaded)
 end
