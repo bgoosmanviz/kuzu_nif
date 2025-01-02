@@ -1,15 +1,18 @@
 [build.env]
 passthrough = [
   "RUSTLER_NIF_VERSION",
-  "CXXFLAGS=-std=c++20 -fconcepts -fPIC",
-  "CFLAGS=-std=c11 -fPIC",
+#  "CXXFLAGS=-std=c++20 -fconcepts -fPIC",
+#  "CFLAGS=-std=c11 -fPIC",
 ]
 
 [target.aarch64-unknown-linux-gnu]
-pre-build = [
-    "apt-get update",
-    "apt-get install -y g++-aarch64-linux-gnu"
-]
+dockerfile = "arm64.Dockerfile"
+
+# [target.aarch64-unknown-linux-gnu]
+# pre-build = [
+#    "apt-get update",
+#    "apt-get install -y g++-aarch64-linux-gnu"
+#]
 
 # [target.aarch64-unknown-linux-gnu.env]
 # CXXFLAGS = "-std=c++20 -fconcepts -fPIC"
