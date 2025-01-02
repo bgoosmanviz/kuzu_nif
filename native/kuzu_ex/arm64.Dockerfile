@@ -3,6 +3,9 @@ FROM ubuntu:24.04
 ARG VERSION
 ENV ARCH=aarch64-unknown-linux-gnu
 
+COPY add-deb-sources.sh /add-deb-sources.sh
+RUN ./add-deb-sources.sh
+
 # Add arm64 architecture and install build dependencies
 RUN dpkg --add-architecture arm64 && \
     apt-get update && \
@@ -15,9 +18,6 @@ RUN dpkg --add-architecture arm64 && \
     cmake \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
-
-COPY add-deb-sources.sh /add-deb-sources.sh
-RUN ./add-deb-sources.sh
 
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
