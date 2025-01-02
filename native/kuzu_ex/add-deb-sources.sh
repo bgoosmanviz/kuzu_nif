@@ -1,0 +1,33 @@
+cat <<EOF > deb822sources
+Types: deb
+URIs: http://archive.ubuntu.com/ubuntu/
+Suites: noble
+Components: main restricted universe
+Architectures: amd64
+
+Types: deb
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: noble-security
+Components: main restricted universe
+Architectures: amd64
+
+Types: deb
+URIs: http://archive.ubuntu.com/ubuntu/
+Suites: noble-updates
+Components: main restricted universe
+Architectures: amd64
+
+Types: deb
+URIs: http://azure.ports.ubuntu.com/ubuntu-ports/
+Suites: noble
+Components: main restricted multiverse universe
+Architectures: arm64
+
+Types: deb
+URIs: http://azure.ports.ubuntu.com/ubuntu-ports/
+Suites: noble-updates
+Components: main restricted multiverse universe
+Architectures: arm64
+EOF
+
+mv deb822sources /etc/apt/sources.list.d/ubuntu.sources
