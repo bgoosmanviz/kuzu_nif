@@ -3,6 +3,7 @@ FROM ubuntu:24.04
 ARG VERSION
 ENV ARCH=aarch64-unknown-linux-gnu
 
+# https://github.com/actions/runner-images/issues/10901
 COPY add-deb-sources.sh /add-deb-sources.sh
 RUN chmod +x /add-deb-sources.sh
 RUN /add-deb-sources.sh
@@ -30,21 +31,3 @@ RUN rustup target add aarch64-unknown-linux-gnu
 # Set the C/C++ compiler for aarch64
 ENV CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc
 ENV CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++
-
-# Create working directory
-# WORKDIR /app
-
-# Copy source code
-# COPY . .
-
-# Build the library
-# RUN cd native/kuzu_ex && \
-#     cargo build --release --target aarch64-unknown-linux-gnu && \
-#     cd target/aarch64-unknown-linux-gnu/release && \
-#     mv libkuzu_ex.so libkuzu_ex-v${VERSION}-nif-2.17-${ARCH}.so && \
-#     tar -czf libkuzu_ex-v${VERSION}-nif-2.17-${ARCH}.so.tar.gz libkuzu_ex-v${VERSION}-nif-2.17-${ARCH}.so
-
-# The output file will be at:
-# /app/native/kuzu_ex/target/aarch64-unknown-linux-gnu/release/libkuzu_ex-v${VERSION}-nif-2.17-aarch64-unknown-linux-gnu.so.tar.gz
-
-

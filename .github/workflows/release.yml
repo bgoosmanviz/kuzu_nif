@@ -16,11 +16,10 @@ jobs:
       matrix:
         nif: ["2.17"]
         job:
-          # - { target: aarch64-apple-darwin, os: macos-15 }
-          # - { target: x86_64-apple-darwin, os: macos-15 }
+          - { target: aarch64-apple-darwin, os: macos-15 }
+          - { target: x86_64-apple-darwin, os: macos-15 }
           - { target: aarch64-unknown-linux-gnu, os: ubuntu-24.04, use-cross: true }
-          # - { target: aarch64-unknown-linux-gnu, os: ubuntu-24.04 }
-          # - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04 }
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04 }
 
     steps:
     - uses: actions/checkout@v3
@@ -35,79 +34,3 @@ jobs:
       with:
         toolchain: stable
         target: ${{ matrix.job.target }}
-
-    # - name: Install prerequisites
-    #   shell: bash
-    #   run: |
-    #     case ${{ matrix.job.target }} in
-    #       aarch64-unknown-linux-*)
-    #         sudo apt-get update
-    #         sudo apt-get install -y gcc-12-aarch64-linux-gnu g++-12-aarch64-linux-gnu
-    #         sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-12 100
-    #         sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-12 100
-    #         ;;
-    #     esac
-
-    # - name: Install build dependencies
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y \
-    #       build-essential \
-    #       g++ \
-    #       cmake \
-    #       pkg-config \
-    #       libssl-dev
-
-    - name: Build the project
-      id: build-crate
-      uses: philss/rustler-precompiled-action@v1.1.4
-      with:
-        project-name: kuzu_ex
-        project-version: ${{ env.PROJECT_VERSION }}
-        target: ${{ matrix.job.target }}
-        nif-version: ${{ matrix.nif }}
-        use-cross: ${{ matrix.job.use-cross }}
-        project-dir: "native/kuzu_ex"
-        cross-version: "v0.2.5"
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ steps.build-crate.outputs.file-name }}
-        path: ${{ steps.build-crate.outputs.file-path }}
-
-    - name: Publish archives and packages
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          ${{ steps.build-crate.outputs.file-path }}
-      if: startsWith(github.ref, 'refs/tags/')
-
-    # - name: Build for aarch64
-    #   if: ${{ matrix.job.target == 'aarch64-unknown-linux-gnu' }}
-    #   run: |
-    #     docker build \
-    #       --build-arg VERSION=${{ env.PROJECT_VERSION }} \
-    #       -f native/kuzu_ex/arm64.Dockerfile \
-    #       -t kuzu-builder .
-        
-    #     # Create artifacts directory
-    #     mkdir -p artifacts
-        
-    #     # Extract the artifact from the container
-    #     container_id=$(docker create kuzu-builder)
-    #     docker cp $container_id:/app/native/kuzu_ex/target/aarch64-unknown-linux-gnu/release/libkuzu_ex-v${{ env.PROJECT_VERSION }}-nif-2.17-aarch64-unknown-linux-gnu.so.tar.gz ./artifacts/
-    #     docker rm $container_id
-
-    # - name: Upload artifact from Docker build
-    #   if: ${{ matrix.job.target == 'aarch64-unknown-linux-gnu' }}
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: libkuzu_ex-v${{ env.PROJECT_VERSION }}-nif-2.17-aarch64-unknown-linux-gnu.so.tar.gz
-    #     path: artifacts/libkuzu_ex-v${{ env.PROJECT_VERSION }}-nif-2.17-aarch64-unknown-linux-gnu.so.tar.gz
-
-    # - name: Publish archives and packages
-    #   if: startsWith(github.ref, 'refs/tags/') && matrix.job.target == 'aarch64-unknown-linux-gnu'
-    #   uses: softprops/action-gh-release@v1
-    #   with:
-    #     files: artifacts/libkuzu_ex-v${{ env.PROJECT_VERSION }}-nif-2.17-aarch64-unknown-linux-gnu.so.tar.gz
