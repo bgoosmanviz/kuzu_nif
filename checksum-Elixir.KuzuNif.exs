@@ -1,5 +1,6 @@
 %{
-  "libkuzu_ex-v0.5.0-nif-2.17-aarch64-apple-darwin.so.tar.gz" => "sha256:0474486b030a316be0d07024b566eeccb2f820b92b9d13afe4f6830cc9aac907",
-  "libkuzu_ex-v0.5.0-nif-2.17-x86_64-apple-darwin.so.tar.gz" => "sha256:b73594f5867c19db602e0c05876e217fefef9c2d35d5d4772605067aebbfa8c8",
-  "libkuzu_ex-v0.5.0-nif-2.17-x86_64-unknown-linux-gnu.so.tar.gz" => "sha256:d283227de11de1e27351e7e94070435b7e58c4ca1fa3d75dac0f09533faaf333",
+  "libkuzu_ex-v0.7.0-nif-2.17-aarch64-apple-darwin.so.tar.gz" => "sha256:863b69b070739613dda98e7ef0c8492bb12641e36c8eb915cf5fe047cfc6e108",
+  "libkuzu_ex-v0.7.0-nif-2.17-aarch64-unknown-linux-gnu.so.tar.gz" => "sha256:643454573488af5a43a0ed515c0c1169ba3dedc37b7eeb8d73a2bd3a399fa07c",
+  "libkuzu_ex-v0.7.0-nif-2.17-x86_64-apple-darwin.so.tar.gz" => "sha256:306b68a4ab001c2dc30014ea4de2ef60eda648edaff92cd020b4733ff98363b2",
+  "libkuzu_ex-v0.7.0-nif-2.17-x86_64-unknown-linux-gnu.so.tar.gz" => "sha256:39fca7aa82253c7fe8beff2b48c7e3b661a29a15435c07799d74c9a1b414e918",
 }

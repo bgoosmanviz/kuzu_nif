@@ -75,7 +75,7 @@ To release a new version:
 1. Commit a new tag. e.g. `v0.x.0`
 2. `git push origin main --tags`
 3. [Wait for all NIFs to be built](https://github.com/bgoosmanviz/kuzu_nif/actions)
-4. `mix rustler_precompiled.download KuzuNif --all --print --ignore-unavailable`
+4. `RUSTLER_PRECOMPILED_FORCE_BUILD=1 mix rustler_precompiled.download KuzuNif --all --print --ignore-unavailable`
 5. `mix hex.publish`
 
 Source: [Precompilation guide](https://hexdocs.pm/rustler_precompiled/precompilation_guide.html)
