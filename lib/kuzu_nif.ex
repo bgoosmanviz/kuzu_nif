@@ -10,5 +10,14 @@ defmodule KuzuNif do
     version: version,
     nif_versions: ["2.17"]
 
+  @doc """
+  Run a query on the Kuzu database at `path`.
+
+  e.g.
+
+  ```elixir
+  {:ok, result} = KuzuNif.run_query("path/to/db", "MATCH (u:User) RETURN u.name, u.age")
+  ```
+  """
   def run_query(_path, _query), do: :erlang.nif_error(:nif_not_loaded)
 end

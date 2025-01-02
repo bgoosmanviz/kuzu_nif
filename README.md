@@ -71,11 +71,12 @@ This project uses the [rustler_precompiled](https://github.com/philss/rustler_pr
 To release a new version:
 
 ```
-1. release a new tag
-2. push the code to your repository with the new tag: `git push origin main --tags`
-3. wait for all NIFs to be built
-4. run `mix rustler_precompiled.download KuzuNif --all --print --ignore-unavailable`
-5. release the package to Hex.pm (make sure your release includes the correct files).
+0. Update version in `mix.exs`, `README.md`, and `Cargo.toml`.
+1. Commit a new tag. e.g. `v0.x.0`
+2. `git push origin main --tags`
+3. [Wait for all NIFs to be built](https://github.com/bgoosmanviz/kuzu_nif/actions)
+4. `mix rustler_precompiled.download KuzuNif --all --print --ignore-unavailable`
+5. `mix hex.publish`
 
 Source: [Precompilation guide](https://hexdocs.pm/rustler_precompiled/precompilation_guide.html)
 ```

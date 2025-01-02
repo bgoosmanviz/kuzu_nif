@@ -11,7 +11,10 @@ defmodule KuzuNif.MixProject do
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      package: package()
+      package: package(),
+      description: "Kuzu NIF for Elixir",
+      name: "KuzuNif",
+      source_url: @source_url
     ]
   end
 
@@ -26,7 +29,8 @@ defmodule KuzuNif.MixProject do
   defp deps do
     [
       {:rustler_precompiled, "~> 0.8.2"},
-      {:rustler, "~> 0.34.0", optional: true}
+      {:rustler, "~> 0.34.0", optional: true},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
