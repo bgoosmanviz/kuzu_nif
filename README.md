@@ -77,15 +77,10 @@ To release a new version:
 3. [Wait for all NIFs to be built](https://github.com/bgoosmanviz/kuzu_nif/actions)
 4. `RUSTLER_PRECOMPILED_FORCE_BUILD=1 mix rustler_precompiled.download KuzuNif --all --print --ignore-unavailable`
 5. `mix hex.publish`
+6. Optional: commit and push the new checksum
 
 Source: [Precompilation guide](https://hexdocs.pm/rustler_precompiled/precompilation_guide.html)
 ```
-
-### Known Issues
-
-- Couldn't figure out how to build aarch64-unknown-linux-gnu NIFs.
-  - [Thread on rust forums](https://users.rust-lang.org/t/need-help-cross-compiling-to-aarch64-unknown-linux-gnu/123318)
-  - [Thread in ruster_precompiled repo](https://github.com/philss/rustler_precompiled/issues/87)
 
 ### About NIF Versions
 
