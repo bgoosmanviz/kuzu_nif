@@ -25,7 +25,7 @@ pub struct KuzuNifQueryResult {
     result: Vec<Vec<KuzuNifValue>>,
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn run_query(path: String, query: String) -> NifResult<KuzuNifQueryResult> {
     let config = SystemConfig::default();
     let db = Database::new(&path, config).map_err(|e| Error::Term(Box::new(format!("Failed to open database: {}", e))))?;
