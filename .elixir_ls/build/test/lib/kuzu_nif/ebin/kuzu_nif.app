@@ -1,0 +1,10 @@
+{application,kuzu_nif,
+             [{modules,['Elixir.KuzuNif']},
+              {compile_env,[{rustler_precompiled,[force_build,kuzu_nif],error},
+                            {rustler_precompiled,[force_build_all],error}]},
+              {optional_applications,[rustler]},
+              {applications,[kernel,stdlib,elixir,logger,rustler_precompiled,
+                             rustler]},
+              {description,"Kuzu NIF for Elixir"},
+              {registered,[]},
+              {vsn,"0.10.1"}]}.

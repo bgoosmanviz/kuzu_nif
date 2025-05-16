@@ -908,7 +908,7 @@ dependencies = [
 
 [[package]]
 name = "kuzu_ex"
-version = "0.10.0"
+version = "0.10.1"
 dependencies = [
  "arrow-array 43.0.0",
  "arrow-schema 43.0.0",
