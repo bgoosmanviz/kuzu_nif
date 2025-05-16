@@ -10,6 +10,14 @@ My solution involves copying the query result, which sounds kind of silly becaus
 
 ## Try it out
 
+### Note about compiling the kuzu_nif Rust lib.
+
+Note: to skip downloading the NIF and force a recompile, set env RUSTLER_PRECOMPILED_FORCE_BUILD=1. Requirements for building the Rust lib
+
+- brew install cmake
+
+### Run the tests
+
 ```
 # Run the test. This takes a while to build.
 # See test/kuzu_nif_test.exs
@@ -57,7 +65,7 @@ by adding `kuzu_nif` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:kuzu_nif, "~> 0.7.2"}
+    {:kuzu_nif, "~> 0.10.0"}
   ]
 end
 ```

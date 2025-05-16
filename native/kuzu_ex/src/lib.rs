@@ -1,5 +1,16 @@
-use rustler::{NifStruct, NifResult, NifTaggedEnum, Error};
+use rustler::{NifStruct, NifResult, NifTaggedEnum, Error, ResourceArc, Resource, resource_impl};
 use kuzu::{Connection, Database, SystemConfig, Value};
+use std::sync::{Arc, Mutex};
+
+// Database resource type
+pub struct DbResource(Arc<Mutex<Database>>);
+#[resource_impl]
+impl Resource for DbResource {}
+
+// Connection resource type
+pub struct ConnResource(Arc<Mutex<Connection<'static>>>);
+#[resource_impl]
+impl Resource for ConnResource {}
 
 #[derive(NifTaggedEnum)]
 pub enum KuzuNifValue {
@@ -26,11 +37,30 @@ pub struct KuzuNifQueryResult {
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn run_query(path: String, query: String) -> NifResult<KuzuNifQueryResult> {
+pub fn create_database(path: String) -> NifResult<ResourceArc<DbResource>> {
     let config = SystemConfig::default();
-    let db = Database::new(&path, config).map_err(|e| Error::Term(Box::new(format!("Failed to open database: {}", e))))?;
-    let conn = Connection::new(&db).map_err(|e| Error::Term(Box::new(format!("Failed to create connection: {}", e))))?;
-    let query_result = conn.query(&query).map_err(|e| Error::Term(Box::new(format!("Query failed: {}", e))))?;
+    let db = Database::new(&path, config)
+        .map_err(|e| Error::Term(Box::new(format!("Failed to open database: {}", e))))?;
+    Ok(ResourceArc::new(DbResource(Arc::new(Mutex::new(db)))))
+}
+
+#[rustler::nif(schedule = "DirtyCpu")]
+pub fn create_connection(db_arc: ResourceArc<DbResource>) -> NifResult<ResourceArc<ConnResource>> {
+    let db_resource: &DbResource = &*db_arc;
+    let db_guard = db_resource.0.lock().unwrap();
+    let conn = Connection::new(&db_guard)
+        .map_err(|e| Error::Term(Box::new(format!("Failed to create connection: {}", e))))?;
+    // Store the connection in a static lifetime
+    let conn = unsafe { std::mem::transmute(conn) };
+    Ok(ResourceArc::new(ConnResource(Arc::new(Mutex::new(conn)))))
+}
+
+#[rustler::nif(schedule = "DirtyCpu")]
+pub fn query(conn_arc: ResourceArc<ConnResource>, cypher: String) -> NifResult<KuzuNifQueryResult> {
+    let conn_resource: &ConnResource = &*conn_arc;
+    let conn_guard = conn_resource.0.lock().unwrap();
+    let query_result = conn_guard.query(&cypher)
+        .map_err(|e| Error::Term(Box::new(format!("Query failed: {}", e))))?;
 
     let mut result = Vec::new();
     for row in query_result {

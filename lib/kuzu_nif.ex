@@ -11,13 +11,44 @@ defmodule KuzuNif do
     nif_versions: ["2.17"]
 
   @doc """
-  Run a query on the Kuzu database at `path`.
+  Create a new Kuzu database at the specified path.
 
-  e.g.
+  Returns a resource that can be used to create connections.
 
-  ```elixir
-  {:ok, result} = KuzuNif.run_query("path/to/db", "MATCH (u:User) RETURN u.name, u.age")
-  ```
+  ## Examples
+
+      db = KuzuNif.create_database("path/to/db")
   """
-  def run_query(_path, _query), do: :erlang.nif_error(:nif_not_loaded)
+  def create_database(_path), do: :erlang.nif_error(:nif_not_loaded)
+
+  @doc """
+  Create a new connection to a Kuzu database.
+
+  ## Examples
+
+      conn = KuzuNif.create_connection(db)
+  """
+  def create_connection(_db), do: :erlang.nif_error(:nif_not_loaded)
+
+  @doc """
+  Run a query using an existing connection.
+
+  ## Examples
+
+      result = KuzuNif.query(conn, "MATCH (u:User) RETURN u.name, u.age")
+  """
+  def query(_conn, _query), do: :erlang.nif_error(:nif_not_loaded)
+
+  @doc """
+  Run a query using a new db and connection.
+
+  ## Examples
+
+      {:ok, result} = KuzuNif.run_query("path/to/db", "MATCH (u:User) RETURN u.name, u.age")
+  """
+  def run_query(path, query) do
+    db = create_database(path)
+    conn = create_connection(db)
+    query(conn, query)
+  end
 end
