@@ -2,11 +2,13 @@
 
 Built by [Kineviz](https://kineviz.com).
 
-**Very** **unfinished** attempt at adapting [KuzuDB's](https://github.com/kuzudb/kuzu) [Rust crate](https://docs.rs/kuzu/latest/kuzu/index.html) into [Elixir](https://elixir-lang.org/) via NIF, supported by the [Rustler](https://github.com/rusterlium/rustler) package. "Unfinished", because ideally we wouldn't open the database and connection in every call to `run_query`, but it works pretty well still. 🙂
+**Very** **unfinished** attempt at adapting [KuzuDB's](https://github.com/kuzudb/kuzu) [Rust crate](https://docs.rs/kuzu/latest/kuzu/index.html) into [Elixir](https://elixir-lang.org/) via NIF, supported by the [Rustler](https://github.com/rusterlium/rustler) package.
 
 See `native/kuzu_ex/src/lib.rs` for the NIF.
 
-My solution involves copying the query result, which sounds kind of silly because ideally we'd take advantage of the underlying arrow format and do something akin to the [Explorer](https://github.com/elixir-explorer/explorer) package, which also [implements NIF in order to adapt Polars DataFrames](https://github.com/elixir-explorer/explorer/blob/main/native/explorer/src/dataframe/io.rs) into Elixir. KuzuDB's Rust crate's [QueryResult](https://docs.rs/kuzu/latest/kuzu/struct.QueryResult.html#) [supports arrow_array::arrow::RecordBatch](https://docs.rs/kuzu/latest/kuzu/struct.QueryResult.html#method.iter_arrow), but I couldn't figure out how to adapt it.
+## TODO:
+
+- Do we need to copy the query result? My solution involves copying the query result, which sounds kind of silly because ideally we'd take advantage of the underlying arrow format and do something akin to the [Explorer](https://github.com/elixir-explorer/explorer) package, which also [implements NIF in order to adapt Polars DataFrames](https://github.com/elixir-explorer/explorer/blob/main/native/explorer/src/dataframe/io.rs) into Elixir. KuzuDB's Rust crate's [QueryResult](https://docs.rs/kuzu/latest/kuzu/struct.QueryResult.html#) [supports arrow_array::arrow::RecordBatch](https://docs.rs/kuzu/latest/kuzu/struct.QueryResult.html#method.iter_arrow), but I couldn't figure out how to adapt it.
 
 ## Try it out
 
