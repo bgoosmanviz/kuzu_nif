@@ -6,6 +6,8 @@ Built by [Kineviz](https://kineviz.com).
 
 See `native/kuzu_ex/src/lib.rs` for the NIF.
 
+See `test/kuzu_nif_test.exs` for an example of how to use it.
+
 ## TODO:
 
 - Do we need to copy the query result? My solution involves copying the query result, which sounds kind of silly because ideally we'd take advantage of the underlying arrow format and do something akin to the [Explorer](https://github.com/elixir-explorer/explorer) package, which also [implements NIF in order to adapt Polars DataFrames](https://github.com/elixir-explorer/explorer/blob/main/native/explorer/src/dataframe/io.rs) into Elixir. KuzuDB's Rust crate's [QueryResult](https://docs.rs/kuzu/latest/kuzu/struct.QueryResult.html#) [supports arrow_array::arrow::RecordBatch](https://docs.rs/kuzu/latest/kuzu/struct.QueryResult.html#method.iter_arrow), but I couldn't figure out how to adapt it.
